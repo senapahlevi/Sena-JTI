@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/tailwindcss/2.2.19/tailwind.min.css"
+    />
+    <!-- Link ke file jQuery -->
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+  </head>
+  <body>
+    <section class="bg-gray-50 dark:bg-gray-900">
+      <div
+        class="flex flex-col items-center justify-center px-6 py-8 mx-auto md:h-screen lg:py-0"
+      >
+        <a
+          href="#"
+          class="flex items-center mb-6 text-2xl font-semibold text-gray-900 dark:text-white"
+        >
+        </a>
+        <div
+          class="w-full bg-white rounded-lg shadow dark:border md:mt-0 sm:max-w-md xl:p-0 dark:bg-gray-800 dark:border-gray-700"
+        >
+          <div class="p-6 space-y-4 md:space-y-6 sm:p-8">
+            <h1
+              class="text-xl text-center leading-tight tracking-tight text-gray-900 md:text-2xl dark:text-white"
+            >
+              Data No Handphone
+            </h1>
+            <form class="space-y-4 md:space-y-6" id="form-submit">
+              <div>
+                <label
+                  for="phone"
+                  class="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
+                  >No Handphone</label
+                >
+                <input
+                  type="tel"
+                  name="phone"
+                  id="phone"
+                  class="bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                  placeholder="Masukan nomor Handphone anda"
+                  required=""
+                />
+              </div>
+              <div>
+                <label
+                  for="password"
+                  class="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
+                  >Provider</label
+                >
+                <select
+                  type="text"
+                  name="provider"
+                  id="provider"
+                  placeholder="Pilih Provider"
+                  class="bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                >
+                  <option value="Telkomsel">Telkomsel</option>
+                  <option value="Indosat">Indosat</option>
+                  <option value="XL">XL</option>
+                  <option value="Tri">Tri</option>
+                  <option value="Smartfren">Smartfren</option>
+                </select>
+              </div>
+              <div class="flex items-center justify-between">
+                <div class="flex items-start"></div>
+                <a
+                  href="#"
+                  class="text-sm font-medium text-primary-600 hover:underline dark:text-primary-500"
+                  >Generate Data</a
+                >
+              </div>
+              <button
+                type="submit"
+                class="text-center bg-indigo-500 hover:bg-indigo-600 text-white font-medium py-2 px-4 rounded-md"
+              >
+                Save
+              </button>
+              <button
+                type="submit"
+                class="text-center bg-indigo-500 hover:bg-indigo-600 text-white font-medium py-2 px-4 rounded-md"
+              >
+                Auto
+              </button>
+            </form>
+          </div>
+        </div>
+      </div>
+    </section>
+  </body>
+</html>
+<script>
+  $(document).ready(function () {
+    console.log("hello");
+    function saveData(phone, provider) {
+      var data = {
+        phone: phone,
+        provider: provider,
+      };
+
+      $.ajax({
+        url: "http://localhost:8080/phone-save",
+        method: "POST",
+        data: JSON.stringify(data),
+        contentType: "application/json",
+        success: function (response) {
+          console.log(response);
+        },
+        error: function (error) {
+          console.error(error);
+        },
+      });
+    }
+
+    $("#form-submit").submit(function (e) {
+      e.preventDefault();
+      var phone = $("#phone").val();
+      var provider = $("#provider").val();
+      saveData(phone, provider);
+    });
+  });
+</script>
