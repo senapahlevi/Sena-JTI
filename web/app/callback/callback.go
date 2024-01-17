@@ -1,6 +1,7 @@
 package callback
 
 import (
+	"fmt"
 	"net/http"
 
 	"github.com/gin-contrib/sessions"
@@ -17,7 +18,11 @@ func Handler(auth *authenticator.Authenticator) gin.HandlerFunc {
 			ctx.String(http.StatusBadRequest, "Invalid state parameter.")
 			return
 		}
+		fmt.Println(ctx.Query("state"), "hello")
+		fmt.Println(session.Get("state"), "get state helloww!!!!")
 
+		fmt.Println(ctx.Request.Context(), "hello context")
+		fmt.Println(ctx.Query("code"), "hello codee!!!!")
 		// Exchange an authorization code for a token.
 		token, err := auth.Exchange(ctx.Request.Context(), ctx.Query("code"))
 		if err != nil {
