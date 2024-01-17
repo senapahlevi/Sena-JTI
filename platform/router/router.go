@@ -19,11 +19,6 @@ import (
 
 // New registers the routes and returns the router.
 func New(auth *authenticator.Authenticator) *gin.Engine {
-	// _, err := database.NewDatabase()
-	// if err != nil {
-	// 	log.Fatal(err)
-	// }
-	// fmt.Println("berhasil konek")
 
 	router := gin.Default()
 

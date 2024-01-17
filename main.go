@@ -11,6 +11,11 @@ import (
 )
 
 func main() {
+	// db, err := database.NewDatabase()
+	// if err != nil {
+	// 	log.Fatal(err)
+	// }
+	// fmt.Println("connect success", db)
 	if err := godotenv.Load(); err != nil {
 		log.Fatalf("Failed to load the env vars: %v", err)
 	}
