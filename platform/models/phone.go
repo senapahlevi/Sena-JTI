@@ -1,9 +1,9 @@
 package models
 
 type PhoneInput struct {
-	ID       int    `gorm:"id"`
-	Phone    string `gorm:"phone"`
-	Provider string `gorm:"provider" `
+	ID       int    `gorm:"id" json:"id"`
+	Phone    string `gorm:"phone" json:"phone"`
+	Provider string `gorm:"provider" json:"provider" `
 }
 
 func (PhoneInput) TableName() string {

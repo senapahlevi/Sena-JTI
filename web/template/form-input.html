@@ -66,14 +66,7 @@
                   <option value="Smartfren">Smartfren</option>
                 </select>
               </div>
-              <div class="flex items-center justify-between">
-                <div class="flex items-start"></div>
-                <a
-                  href="#"
-                  class="text-sm font-medium text-primary-600 hover:underline dark:text-primary-500"
-                  >Generate Data</a
-                >
-              </div>
+
               <button
                 type="submit"
                 class="text-center bg-indigo-500 hover:bg-indigo-600 text-white font-medium py-2 px-4 rounded-md"
@@ -81,6 +74,7 @@
                 Save
               </button>
               <button
+                id="generate"
                 type="submit"
                 class="text-center bg-indigo-500 hover:bg-indigo-600 text-white font-medium py-2 px-4 rounded-md"
               >
@@ -103,7 +97,7 @@
       };
 
       $.ajax({
-        url: "http://localhost:8080/phone-save",
+        url: "http://localhost:3000/create",
         method: "POST",
         data: JSON.stringify(data),
         contentType: "application/json",
@@ -116,6 +110,34 @@
       });
     }
 
+    function generatePhone() {
+      var providersList = ["Telkomsel", "Indosat", "XL","Tri", "Smartfren"];
+      var providerIndex = Math.floor(Math.random() * providersList.length);
+      console.log("hello index",providerIndex)
+      if (providerIndex < 0 ){
+         providerIndex += 1
+      } 
+      if (providerIndex > 4 ){
+        providerIndex -= 1
+      } 
+      var phone =
+        "081" +
+        "-" +
+        Math.floor(1000 + Math.random() * 9000) +
+        "-" +
+        Math.floor(1000 + Math.random() * 9000);
+      return [phone, providersList[providerIndex]];
+    }
+
+    $("#generate").click(function () {
+      var [phone, provider] = generatePhone();
+      $("#phone").val(phone);
+      $("#provider").val(provider);
+      console.log(phone, "hello phone");
+      console.log(provider, "hello provider");
+      saveData(phone, provider);
+    });
+    
     $("#form-submit").submit(function (e) {
       e.preventDefault();
       var phone = $("#phone").val();

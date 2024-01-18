@@ -9,6 +9,7 @@ import (
 	"github.com/gin-gonic/gin"
 
 	"01-Login/platform/authenticator"
+	"01-Login/platform/database"
 	"01-Login/platform/middleware"
 	"01-Login/web/app/callback"
 	"01-Login/web/app/home"
@@ -18,12 +19,12 @@ import (
 )
 
 // New registers the routes and returns the router.
-func New(auth *authenticator.Authenticator) *gin.Engine {
+func New(auth *authenticator.Authenticator, db *database.Database) *gin.Engine {
 
 	router := gin.Default()
-
+	home.SetDatabase(db)
 	router.Use(cors.New(cors.Config{
-		AllowOrigins: []string{"http://localhost:3000", "https://next-bf-home-routes.vercel.app"},
+		AllowOrigins: []string{"http://localhost:3000", "*"},
 		AllowMethods: []string{"GET", "POST", "PUT", "DELETE"},
 		AllowHeaders: []string{"Content-Type"},
 		// ExposeHeaders:    []string{"Content-Type"},
@@ -39,10 +40,12 @@ func New(auth *authenticator.Authenticator) *gin.Engine {
 	router.Static("/public", "web/static")
 	router.LoadHTMLGlob("web/template/*")
 
-	router.GET("/", home.Handler)
-	router.GET("/home", home.Handler)
+	router.GET("/", middleware.IsAuthenticated, home.Handler)
+	router.POST("/create", home.Create)
 	router.GET("/login", login.Handler(auth))
 	router.GET("/callback", callback.Handler(auth))
+	// router.POST("/create", middleware.IsAuthenticated, home.Create)
+	// router.GET("/user", middleware.IsAuthenticated, user.Handler)
 	router.GET("/user", middleware.IsAuthenticated, user.Handler)
 	router.GET("/logout", logout.Handler)
 
