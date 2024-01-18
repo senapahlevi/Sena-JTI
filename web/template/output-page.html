@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <title>Tabel Nomor Genap dan Ganjil</title>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdn.tailwindcss.com" />
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css" integrity="sha384-4LISF5TTJX/fLmGSxO53rV4miRxdg84mZsxmO8Rx5jGtp/LbrixFETvWa5a6sESd" crossorigin="anonymous">
+  </head>
+  <body>
+    <div class="container mx-auto p-4">
+      <h1 class="text-4xl font-bold text-center mb-8">
+        Tabel Nomor Genap dan Ganjil
+      </h1>
+      <div class="grid grid-cols-2 gap-4">
+        <!-- Table even -->
+        <div class="bg-gray-100 p-4 rounded-lg shadow-lg">
+          <h2 class="text-2xl font-semibold text-center mb-4">Nomor Genap</h2>
+          <table class="table-auto w-full border-collapse">
+            <thead>
+              <tr class="bg-gray-200">
+                <th class="border px-4 py-2">ID</th>
+                <th class="border px-4 py-2">Phone</th>
+                <th class="border px-4 py-2">Provider</th>
+                <th class="border px-4 py-2">Edit</th>
+
+              </tr>
+            </thead>
+            <tbody id="even-table"></tbody>
+          </table>
+        </div>
+        <!-- Table odd -->
+        <div class="bg-gray-100 p-4 rounded-lg shadow-lg">
+          <h2 class="text-2xl font-semibold text-center mb-4">Nomor Ganjil</h2>
+          <table class="table-auto w-full border-collapse">
+            <thead>
+              <tr class="bg-gray-200">
+                <th class="border px-4 py-2">ID</th>
+                <th class="border px-4 py-2">Phone</th>
+                <th class="border px-4 py-2">Provider</th>
+                <th class="border px-4 py-2">Edit</th>
+              </tr>
+            </thead>
+            <tbody id="odd-table">
+                <tr>
+                    <button onclick="deleteData(1)" class="bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded">
+                    DELETE
+                    </button>
+                </tr>
+             </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+    <script>
+      function getData() {
+        return $.ajax({
+          url: "http://localhost:3000/get-output/",
+          method: "GET",
+          dataType: "json",
+          contentType: "application/json",
+          success: function (response) {
+            console.log(response);
+          },
+          error: function (error) {
+            console.error(error);
+          },
+        });
+      }
+
+      function deleteData(isOdd){
+        // var id = row.find('td:first').text();
+        $.ajax({
+        url: "http://localhost:3000/delete/" + isOdd ,
+          method: "DELETE",
+          dataType: "json",
+          contentType: "application/json",
+          success: function (response) {
+            console.log(response);
+            // row.remove();
+            showingAllData();
+          },
+          error: function (error) {
+            console.error(error);
+          },
+        })
+      }
+
+      function showData(data, tableId, isOdd) {
+        $(tableId).empty();
+        $.each(data, function (index, item) {
+          if (item.is_odd == isOdd) {
+            var tr = $("<tr></tr>");
+            tr.append($("<td class='border px-4 py-2'></td>").text(item.id ));
+            tr.append($("<td class='border px-4 py-2'></td>").text(item.phone));
+            tr.append(
+              $("<td class='border px-4 py-2'></td>").text(item.provider)
+            );
+            var editLink = $("<a href='#'></a>").text("Edit").on("click", function(){
+                window.location.href="http://localhost:3000/output-edit/" + item.id
+            });
+            tr.append($("<td class='border px-4 py-2'></td>").append(editLink));
+            $(tableId).append(tr);
+          }
+        });
+      }
+
+      function showingAllData(){
+        getData().done(function (data) {
+           showData(data, "#even-table", 0);
+           showData(data, "#odd-table", 1);
+        });
+      }
+      function ReloadPage(second){
+        setInterval(function(){
+            showingAllData();
+        },second * 1000);
+      }
+
+      $(document).ready(function () {
+        showingAllData();
+        ReloadPage(60);
+      });
+    </script>
+  </body>
+</html>

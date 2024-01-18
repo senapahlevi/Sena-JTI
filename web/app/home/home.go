@@ -3,8 +3,8 @@ package home
 import (
 	"01-Login/platform/database"
 	"01-Login/platform/models"
-	"fmt"
 	"net/http"
+	"strconv"
 
 	"github.com/gin-gonic/gin"
 	"gorm.io/gorm"
@@ -25,21 +25,26 @@ func Handler(ctx *gin.Context) {
 }
 
 func Create(ctx *gin.Context) {
-	fmt.Println("hello create", db)
 	var phoneModel models.PhoneInput
 	err := ctx.ShouldBindJSON(&phoneModel)
 	if err != nil {
 		ctx.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
-		fmt.Println("hello create 2")
-
 		return
 	}
-	fmt.Println("hello create 3")
+	lastDigit := phoneModel.Phone[len(phoneModel.Phone)-1]
+	lastDigitInt, err := strconv.Atoi(string(lastDigit))
+	if err != nil {
+		ctx.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
+	}
+
+	if lastDigitInt%2 == 0 {
+		phoneModel.IsOdd = 0
+	} else {
+		phoneModel.IsOdd = 1
+	}
 
 	result := db.Create(&phoneModel)
 	if result.Error != nil {
-		fmt.Println("hello create 4", result.Error.Error())
-
 		ctx.JSON(http.StatusInternalServerError, gin.H{"error": result.Error.Error()})
 		return
 	}

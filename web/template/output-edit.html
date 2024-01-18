@@ -8,7 +8,7 @@
       rel="stylesheet"
       href="https://cdnjs.cloudflare.com/ajax/libs/tailwindcss/2.2.19/tailwind.min.css"
     />
-     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
   </head>
   <body>
     <section class="bg-gray-50 dark:bg-gray-900">
@@ -87,17 +87,38 @@
   </body>
 </html>
 <script>
+  function getData() {
+  
+  }
   $(document).ready(function () {
-    console.log("hello");
+
+    var id = window.location.pathname.split('/').pop();
+    console.log("hellow", id)
+    $.ajax({
+      url: "http://localhost:3000/output-id/" + id,
+      method: "GET",
+      dataType: "json",
+      contentType: "application/json",
+      success: function (response) {
+        console.log(response);
+        $('#phone').val(response[0].phone)
+        $('#provider').val(response[0].provider)
+      },
+      error: function (error) {
+        console.error(error);
+      },
+    });
+   
     function saveData(phone, provider) {
+        console.log( "hello data");
       var data = {
         phone: phone,
         provider: provider,
       };
 
       $.ajax({
-        url: "http://localhost:3000/create",
-        method: "POST",
+        url: "http://localhost:3000/edit/" + id,
+        method: "PUT",
         data: JSON.stringify(data),
         contentType: "application/json",
         success: function (response) {
@@ -110,15 +131,15 @@
     }
 
     function generatePhone() {
-      var providersList = ["Telkomsel", "Indosat", "XL","Tri", "Smartfren"];
+      var providersList = ["Telkomsel", "Indosat", "XL", "Tri", "Smartfren"];
       var providerIndex = Math.floor(Math.random() * providersList.length);
-      console.log("hello index",providerIndex)
-      if (providerIndex < 0 ){
-         providerIndex += 1
-      } 
-      if (providerIndex > 4 ){
-        providerIndex -= 1
-      } 
+      console.log("hello index", providerIndex);
+      if (providerIndex < 0) {
+        providerIndex += 1;
+      }
+      if (providerIndex > 4) {
+        providerIndex -= 1;
+      }
       var phone =
         "081" +
         "" +
@@ -136,7 +157,7 @@
       console.log(provider, "hello provider");
       saveData(phone, provider);
     });
-    
+
     $("#form-submit").submit(function (e) {
       e.preventDefault();
       var phone = $("#phone").val();
