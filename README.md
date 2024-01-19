@@ -1,52 +1,200 @@
-# Auth0 + Go Web App Sample
 
-This sample demonstrates how to add authentication to a Go web app using Auth0.
+# JTI Task
 
-Check the [Go Quickstart](https://auth0.com/docs/quickstart/webapp/golang) to better understand this sample.
+Backend used for to create cashier invoices quickly and easily. This application is designed to help small and medium businesses manage their sales transactions.
 
-## Running the App
+You can try using `postman` and 
 
-To run the app, make sure you have **go** installed.
+#### 
+[Try Demo this]()
 
-Rename the `.env.example` file to `.env` and provide your Auth0 credentials.
+
+
+## Tools Stack
+
+**Database:** PostgreSQL
+
+**Tools:** Golang
+
+**Framework:** Gin
+
+**Library:** Gorm
+
+
+## Design
+
+[Figma](https://linktodocumentation)
+
+
+## Run Locally
+
+Clone the project
 
 ```bash
-# .env
-
-AUTH0_CLIENT_ID=Xsay8BGw96lboEah9FY7cf3vXw3VXBDk
-AUTH0_DOMAIN=dev-t2wh4qrgz6jvau28.us.auth0.com
-AUTH0_CLIENT_SECRET=tHEoMikeDJsWbKlMH5ouhcw60BC1v11noGW99lxNn1JCcEL2ADxrvBeY_WOcJtru
-AUTH0_CALLBACK_URL=http://localhost:3000/callback
+  git clone https://github.com/senapahlevi/Sena-JTI
 ```
 
-Once you've set your Auth0 credentials in the `.env` file, run `go mod vendor` to download the Go dependencies.
+Go to the project directory
 
-Run `go run main.go` to start the app and navigate to [http://localhost:3000/](http://localhost:3000/).
+```bash
+  cd my-project
+```
 
-## What is Auth0?
+Start the server
 
-Auth0 helps you to:
+```bash
+go run main.go
+```
 
-* Add authentication with [multiple authentication sources](https://auth0.com/docs/authenticate/identity-providers), either social like **Google, Facebook, Microsoft Account, LinkedIn, GitHub, Twitter, Box, Salesforce, amont others**, or enterprise identity systems like **Windows Azure AD, Google Apps, Active Directory, ADFS or any SAML Identity Provider**.
-* Add authentication through more traditional **[username/password databases](https://auth0.com/docs/authenticate/database-connections/custom-db/create-db-connection)**.
-* Add support for **[linking different user accounts](https://auth0.com/docs/manage-users/user-accounts/user-account-linking/link-user-accounts)** with the same user.
-* Support for generating signed [Json Web Tokens](https://auth0.com/docs/secure/tokens/json-web-tokens) to call your APIs and **flow the user identity** securely.
-* Analytics of how, when and where users are logging in.
-* Pull data from other sources and add it to the user profile, through [JavaScript rules](https://auth0.com/docs/customize/rules).
 
-## Create a free Auth0 account
+## API
+Using OAUTH0
+```bash
+  go run main.go
+```
+and will program will Listening and serving HTTP on `:3000`
+#### Save Number 
+- `POST`
 
-1. Go to [Auth0](https://auth0.com/signup) and click Sign Up.
-2. Use Google, GitHub or Microsoft Account to login.
+`http://localhost:3000/create`
 
-## Issue Reporting
+body json 
+```bash
+{
+    "phone" :"08121082193",
+    "provide" :"telkomsel"
+}
+```
+response json:
+```bash
 
-If you have found a bug or if you have a feature request, please report them at this repository issues section. Please do not report security vulnerabilities on the public GitHub issue tracker. The [Responsible Disclosure Program](https://auth0.com/whitehat) details the procedure for disclosing security issues.
+    {
+        "id": 700,
+        "phone": "08121082193",
+        "provider": "telkomsel",
+        "is_odd": 1
+    }
 
-## Author
+```
+#### Update Invoice  
+- `PUT`
+`http://localhost:3000/update-invoice/43`
+```bash
+{
+    "data": {
+        "invoice_id": 43,
+        "subject": "test subject",
+        "status": "paid",
+        "issued_date": "2020-01-02T00:00:00Z",
+        "due_date": "2020-02-03T00:00:00Z",
+        "sub_total": 6990,
+        "tax": 699,
+        "grand_total": 6291,
+        "detail_item_json": "[{ \"item_name\":\"Toyowheels\",\"item_type\":\"tools\",\"quantity\":1,\"unit_price\":6990}]",
+        "customer": "rudi tabuti",
+        "address": "newcastle",
+        "detail_items": null
+    }
+}
+```
 
-[Auth0](https://auth0.com)
+#### Detail All Invoice /GET All invoice
+- `GET`
+`http://localhost:3000/invoice`
 
-## License
+```bash
+{
+    "data": [
+        {
+            "invoice_id": 43,
+            "subject": "test subject",
+            "status": "paid",
+            "issued_date": "2020-01-02T07:00:00+07:00",
+            "due_date": "2020-02-03T07:00:00+07:00",
+            "sub_total": 6990,
+            "tax": 699,
+            "grand_total": 6291,
+            "detail_item_json": "[{ \"item_name\":\"Toyowheels\",\"item_type\":\"tools\",\"quantity\":1,\"unit_price\":6990}]",
+            "customer": "rudi tabuti",
+            "address": "newcastle",
+            "detail_items": null
+        },
+        {
+            "invoice_id": 44,
+            "subject": "test subject",
+            "status": "paid",
+            "issued_date": "2023-02-03T07:00:00+07:00",
+            "due_date": "2020-02-03T07:00:00+07:00",
+            "sub_total": 7590,
+            "tax": 759,
+            "grand_total": 6831,
+            "detail_item_json": "[{\"invoice_id\":1, \"item_name\":\"toys\",\"item_type\":\"service\",\"quantity\":10,\"unit_price\":20 },{\"invoice_id\":1, \"item_name\":\"ice cream\",\"item_type\":\"service\",\"quantity\":1,\"unit_price\":690 }]",
+            "customer": "boedi",
+            "address": "Test address",
+            "detail_items": null
+        }
+    ]
+}
+```
+#### Delete Invoice button  
+- `DELETE`
+`http://localhost:3000/detail-items/1`
+ 
+ 
+#### Get ID data 
+`GET`
 
-This project is licensed under the MIT license. See the [LICENSE](LICENSE.txt) file for more info.
+`http://localhost:3000/output-id/700 
+
+
+
+response json:
+```bash
+[
+    {
+        "id": 700,
+        "phone": "086969181293913",
+        "provider": "Tri",
+        "is_odd": 1
+    }
+]
+```
+#### Detail ID Invoice  
+
+- `GET`
+`http://localhost:3000/invoice/43`
+```bash
+{
+    "data": {
+        "invoice_id": 43,
+        "subject": "test subject",
+        "status": "paid",
+        "issued_date": "2020-01-02T07:00:00+07:00",
+        "due_date": "2020-02-03T07:00:00+07:00",
+        "sub_total": 6990,
+        "tax": 699,
+        "grand_total": 6291,
+        "detail_item_json": "[{ \"item_name\":\"Toyowheels\",\"item_type\":\"tools\",\"quantity\":1,\"unit_price\":6990}]",
+        "customer": "rudi tabuti",
+        "address": "newcastle",
+        "detail_items": [
+            {
+                "item_id": 39,
+                "InvoiceID": 43,
+                "item_name": "Toyowheels",
+                "item_type": "tools",
+                "quantity": 1,
+                "unit_price": 6990,
+                "amount": 6990
+            }
+        ]
+    }
+}
+```
+
+
+
+
+- Add more integrations
+
+

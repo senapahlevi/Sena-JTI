@@ -42,10 +42,10 @@ func New(auth *authenticator.Authenticator, db *database.Database) *gin.Engine {
 	router.Static("/public", "web/static")
 	router.LoadHTMLGlob("web/template/*")
 
-	router.GET("/", middleware.IsAuthenticated, home.Handler)
+	router.GET("/input", middleware.IsAuthenticated, home.Handler)
 	router.GET("/output", middleware.IsAuthenticated, output.Handler)
 	router.GET("/output-edit/:id", middleware.IsAuthenticated, output.EditOutput)
-	router.GET("/login", login.Handler(auth))
+	router.GET("/", login.Handler(auth))
 	router.GET("/callback", callback.Handler(auth))
 	// router.POST("/create", middleware.IsAuthenticated, home.Create)
 	// router.GET("/user", middleware.IsAuthenticated, user.Handler)
