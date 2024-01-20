@@ -159,40 +159,6 @@ response json:
     }
 ]
 ```
-#### Detail ID Invoice  
-
-- `GET`
-`http://localhost:3000/invoice/43`
-```bash
-{
-    "data": {
-        "invoice_id": 43,
-        "subject": "test subject",
-        "status": "paid",
-        "issued_date": "2020-01-02T07:00:00+07:00",
-        "due_date": "2020-02-03T07:00:00+07:00",
-        "sub_total": 6990,
-        "tax": 699,
-        "grand_total": 6291,
-        "detail_item_json": "[{ \"item_name\":\"Toyowheels\",\"item_type\":\"tools\",\"quantity\":1,\"unit_price\":6990}]",
-        "customer": "rudi tabuti",
-        "address": "newcastle",
-        "detail_items": [
-            {
-                "item_id": 39,
-                "InvoiceID": 43,
-                "item_name": "Toyowheels",
-                "item_type": "tools",
-                "quantity": 1,
-                "unit_price": 6990,
-                "amount": 6990
-            }
-        ]
-    }
-}
-```
-
-
 
 
 - Add more integrations
