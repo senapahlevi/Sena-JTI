@@ -8,7 +8,7 @@
       rel="stylesheet"
       href="https://cdnjs.cloudflare.com/ajax/libs/tailwindcss/2.2.19/tailwind.min.css"
     />
-     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
   </head>
   <body>
     <section class="bg-gray-50 dark:bg-gray-900">
@@ -108,17 +108,25 @@
         },
       });
     }
+    function generateAndSaveMulti() {
+      for (let i = 0; i < 25; i++) {
+        var [phone, provider] = generatePhone();
+        $("#phone").val(phone);
+        $("#provider").val(provider);
+        saveData(phone, provider);
+      }
+    }
 
     function generatePhone() {
-      var providersList = ["Telkomsel", "Indosat", "XL","Tri", "Smartfren"];
+      var providersList = ["Telkomsel", "Indosat", "XL", "Tri", "Smartfren"];
       var providerIndex = Math.floor(Math.random() * providersList.length);
-      console.log("hello index",providerIndex)
-      if (providerIndex < 0 ){
-         providerIndex += 1
-      } 
-      if (providerIndex > 4 ){
-        providerIndex -= 1
-      } 
+      console.log("hello index", providerIndex);
+      if (providerIndex < 0) {
+        providerIndex += 1;
+      }
+      if (providerIndex > 4) {
+        providerIndex -= 1;
+      }
       var phone =
         "081" +
         "" +
@@ -129,14 +137,14 @@
     }
 
     $("#generate").click(function () {
-      var [phone, provider] = generatePhone();
-      $("#phone").val(phone);
-      $("#provider").val(provider);
-      console.log(phone, "hello phone");
-      console.log(provider, "hello provider");
-      saveData(phone, provider);
+      // var [phone, provider] = generatePhone();
+      // $("#phone").val(phone);
+      // $("#provider").val(provider);
+
+      // saveData(phone, provider);
+      generateAndSaveMulti();
     });
-    
+
     $("#form-submit").submit(function (e) {
       e.preventDefault();
       var phone = $("#phone").val();

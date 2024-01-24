@@ -6,7 +6,12 @@
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="https://cdn.tailwindcss.com" />
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css" integrity="sha384-4LISF5TTJX/fLmGSxO53rV4miRxdg84mZsxmO8Rx5jGtp/LbrixFETvWa5a6sESd" crossorigin="anonymous">
+    <link
+      rel="stylesheet"
+      href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css"
+      integrity="sha384-4LISF5TTJX/fLmGSxO53rV4miRxdg84mZsxmO8Rx5jGtp/LbrixFETvWa5a6sESd"
+      crossorigin="anonymous"
+    />
   </head>
   <body>
     <div class="container mx-auto p-4">
@@ -24,11 +29,29 @@
                 <th class="border px-4 py-2">Phone</th>
                 <th class="border px-4 py-2">Provider</th>
                 <th class="border px-4 py-2">Edit</th>
-
               </tr>
             </thead>
-            <tbody id="even-table"></tbody>
+            <tbody id="even-table">
+              <tr>
+                <!-- <button
+                  onclick="deleteData(0)"
+                  class="bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded"
+                >
+                  DELETE
+                </button> -->
+              </tr>
+            </tbody>
           </table>
+          <div class="flex justify-center mt-4">
+            <button
+              onclick="deleteData(0)"
+              class="bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded"
+            >
+              DELETE
+            </button>
+          </div>
+
+
         </div>
         <!-- Table odd -->
         <div class="bg-gray-100 p-4 rounded-lg shadow-lg">
@@ -43,13 +66,26 @@
               </tr>
             </thead>
             <tbody id="odd-table">
-                <tr>
-                    <button onclick="deleteData(1)" class="bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded">
-                    DELETE
-                    </button>
-                </tr>
-             </tbody>
+              <tr>
+                <!-- <button
+                  onclick="deleteData(1)"
+                  class="bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded"
+                >
+                  DELETE
+                </button> -->
+              </tr>
+            </tbody>
           </table>
+
+          <div class="flex justify-center mt-4">
+            <button
+              onclick="deleteData(1)"
+              class="bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded"
+            >
+              DELETE
+            </button>
+          </div>
+
         </div>
       </div>
     </div>
@@ -69,22 +105,20 @@
         });
       }
 
-      function deleteData(isOdd){
-        // var id = row.find('td:first').text();
+      function deleteData(isOdd) {
         $.ajax({
-        url: "http://localhost:3000/delete/" + isOdd ,
+          url: "http://localhost:3000/delete/" + isOdd,
           method: "DELETE",
           dataType: "json",
           contentType: "application/json",
           success: function (response) {
             console.log(response);
-            // row.remove();
-            showingAllData();
+             showingAllData();
           },
           error: function (error) {
             console.error(error);
           },
-        })
+        });
       }
 
       function showData(data, tableId, isOdd) {
@@ -92,30 +126,33 @@
         $.each(data, function (index, item) {
           if (item.is_odd == isOdd) {
             var tr = $("<tr></tr>");
-            tr.append($("<td class='border px-4 py-2'></td>").text(item.id ));
+            tr.append($("<td class='border px-4 py-2'></td>").text(item.id));
             tr.append($("<td class='border px-4 py-2'></td>").text(item.phone));
             tr.append(
               $("<td class='border px-4 py-2'></td>").text(item.provider)
             );
-            var editLink = $("<a href='#'></a>").text("Edit").on("click", function(){
-                window.location.href="http://localhost:3000/output-edit/" + item.id
-            });
+            var editLink = $("<a href='#'></a>")
+              .text("Edit")
+              .on("click", function () {
+                window.location.href =
+                  "http://localhost:3000/output-edit/" + item.id;
+              });
             tr.append($("<td class='border px-4 py-2'></td>").append(editLink));
             $(tableId).append(tr);
           }
         });
       }
 
-      function showingAllData(){
+      function showingAllData() {
         getData().done(function (data) {
-           showData(data, "#even-table", 0);
-           showData(data, "#odd-table", 1);
+          showData(data, "#even-table", 0);
+          showData(data, "#odd-table", 1);
         });
       }
-      function ReloadPage(second){
-        setInterval(function(){
-            showingAllData();
-        },second * 1000);
+      function ReloadPage(second) {
+        setInterval(function () {
+          showingAllData();
+        }, second * 1000);
       }
 
       $(document).ready(function () {

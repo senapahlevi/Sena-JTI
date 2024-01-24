@@ -19,7 +19,6 @@ import (
 	"01-Login/web/app/user"
 )
 
-// New registers the routes and returns the router.
 func New(auth *authenticator.Authenticator, db *database.Database) *gin.Engine {
 
 	router := gin.Default()
@@ -32,8 +31,7 @@ func New(auth *authenticator.Authenticator, db *database.Database) *gin.Engine {
 		// ExposeHeaders:    []string{"Content-Type"},
 		AllowCredentials: true,
 	}))
-	// To store custom types in our cookies,
-	// we must first register them using gob.Register
+
 	gob.Register(map[string]interface{}{})
 
 	store := cookie.NewStore([]byte("secret"))

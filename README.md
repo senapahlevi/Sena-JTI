@@ -75,4 +75,10 @@ response json:
     }
 
 ```
+-Output for see Data, Edit and Delete
+http://localhost:3000/output
+-Edit
+example: `http://localhost:3000/output-edit/3`
+
+
 
